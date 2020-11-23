@@ -1,3 +1,10 @@
+// pattern 1
+// *
+// **
+// ***
+// ****
+// *****
+
 var line = 5;
 var star = '';
 for (var i = 1; i <= line; i++) {
