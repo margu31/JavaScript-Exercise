@@ -12,21 +12,14 @@
 function binarySearch(array, target) {
   var start = 0;
   var end = array.length-1;
+  var mid = Math.floor((start + end) / 2);
   
-  while (start <= end) {
-    var mid = Math.floor((start + end) / 2);
-    if ( target > array[mid]) {
-      start = mid + 1;
-    }
-    if ( target < array[mid]) {
-      end = mid - 1;
-    }  
-    if ( target === array[mid]) {
-      return mid;
-    } 
+  while ( target !== array[mid]) {
+    if( start >= array.length || end < 0 ) return -1;
+    target > array[mid] ? start = mid + 1 : end = mid - 1;
+    mid = Math.floor((start + end) / 2);
   }
-  
-  return -1;
+  return mid;
 }
 
 console.log(binarySearch([1, 2, 3, 4, 5, 6], 1)); // 0
