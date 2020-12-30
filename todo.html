@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <form class="container">
+    <input type="text" class="todos">
+    <button class="btn">등록</button>
+  </form>
+  <ul class="todolist">
+    <!-- <li></li> -->
+  </ul>
+
+  <script>
+    const $form = document.querySelector('.container');
+    const $input = document.querySelector('.todos');
+    const $button = document.querySelector('.btn');
+    const $ul = document.querySelector('.todolist');
+    
+    $button.onclick = e => {
+      const $li = document.createElement('li');
+      const $checkbox = document.createElement('input');
+      const $span = document.createElement('span');
+      const $remove = document.createElement('button');
+
+      $checkbox.setAttribute('type', 'checkbox');
+      $span.textContent = $input.value;
+      $remove.textContent = 'X';
+
+      $li.appendChild($checkbox);
+      $li.appendChild($span);
+      $li.appendChild($remove);
+      $ul.appendChild($li);
+    };
+
+    $form.onsubmit = e => {
+      e.preventDefault();
+      $input.focus(); 
+      // why onfocus??? 엔터는 가능한데, 클릭은 안됨
+      $input.value = '';
+    };
+
+    $ul.onclick = e => {
+      if (e.target.type !== 'submit') return;
+      // 왜 e.target !== $remove 이건 안되죵
+      // 왜 타입을 봐야해??? 왜 submit이징?
+      e.currentTarget.removeChild(e.target.parentNode);
+    }
+
+    $ul.onchange = e => {
+      e.target.parentNode.style.textDecoration = e.target.checked ? 'line-through' : 'none';
+      // e.target.parentNode 대신 $li쓰면 왜 안되죵?
+    };
+
+  </script>
+</body>
+</html>
