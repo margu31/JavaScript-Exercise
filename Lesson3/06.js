@@ -10,10 +10,12 @@ let todos = [
 ];
 
 function toggleCompletedById(id) {
-  todos = todos.map((todo) =>
-    todo.id !== id ? todo : { ...todo, completed: !todo.completed}
-    );
-}
+  // todos = todos.map(item => id === item.id ? !item.completed : item.completed);
+  // 이렇게 하면 [false, false, false] 만 반환..
+  todos = todos.map(item => item.id === id ? {...item, completed: !item.completed} : item);
+  // return todos;
+  // 오홍.. 이건 return 안 적어줘도 되는구낭
+};
 
 toggleCompletedById(2);
 
@@ -25,3 +27,13 @@ console.log(todos);
   { id: 1, content: 'Javascript', completed: false }
 ]
 */
+
+// 강사님 답안
+/*
+function toggleCompletedById(id) {
+  todos = todos.map((todo) =>
+    todo.id !== id ? todo : { ...todo, completed: !todo.completed}
+    );
+}
+*/
+

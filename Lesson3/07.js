@@ -10,8 +10,9 @@ let todos = [
 ];
 
 function toggleCompletedAll() {
-  
-}
+  // todos = todos.map(todo => todo.completed === false ? {...todo, completed: true} : todo);
+  todos = todos.map(todo => todo.completed ? todo : {...todo, completed: !todo.completed});
+};
 
 toggleCompletedAll();
 
