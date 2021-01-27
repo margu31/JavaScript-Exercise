@@ -12,7 +12,7 @@ const $active = document.querySelector('.active-todos');
 
 
 const render = () => {
-  console.log('[todos'], todos);
+  console.log('[todos]', todos);
 
   $todos.innerHTML = todos.map(({ id, content, completed }) => 
     `<li id="${id}" class="todo-item">

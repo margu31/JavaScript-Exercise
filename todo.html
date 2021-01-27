@@ -35,6 +35,7 @@
       e.preventDefault();
       $input.focus(); 
       // why onfocus??? 엔터는 가능한데, 클릭은 안됨
+      // => onfocus는 메서드가 아님..이벤트임 에러 발생(타입에러)
       $input.value = '';
     };
 

@@ -4,6 +4,7 @@
   "scripts": {
     "start": "json-server --watch db.json"
   },
+  "type": "module",
   "devDependencies": {
     "json-server": "^0.16.1"
   }
