@@ -37,6 +37,16 @@ function getRestCoordinate(array) {
   return result.flat();
 }
 
+// function getRestCoordinate(array) {
+//   const arr = array.flat();
+//   let rest = [];
+
+//   arr.filter(v => !rest.includes(v) ? rest.push(v) : rest.splice(rest.indexOf(v), 1))
+
+//   if (arr.indexOf(rest[0]) % 2) return rest.reverse();
+//   return rest;
+// }
+
 console.log(getRestCoordinate([[1, 4], [3, 4], [3, 10]])); // [1, 10]
 console.log(getRestCoordinate([[7, 3], [9, 3], [9, 0]])); // [7, 0]
 console.log(getRestCoordinate([[6, 10], [5, 10], [5, 5]])); // [6, 5]
