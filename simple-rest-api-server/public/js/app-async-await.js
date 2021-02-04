@@ -1,12 +1,5 @@
-// import ajax from './xhr.js';
-// import ajax from './promise.js'; 
-// const axios = require('axios');
-// import axios from './axios.js';
 
-// import axios from 'axios';
-
-// console.log(ajax);
-// axios.get('/todos');
+import ajax from './promise.js'; 
 
 // State
 let todos = [];
@@ -46,30 +39,25 @@ const setTodos = _todos => {
   render();
 };
 
-const getTodos = () => {
-  // todos = [
-  //   { id: 1, content: 'HTML', completed: false },
-  //   { id: 2, content: 'CSS', completed: true },
-  //   { id: 3, content: 'Javascript', completed: false }
-  // ].sort((todo1, todo2) => todo2.id - todo1.id);
-  // console.log('[getTodos]', todos);
+const getTodos = async () => {
 
-  // render();
-  // ajax.get('/todos', setTodos);
-  
-  // ajax.get('/todos') // 프로미스 반환, then하나 catch하나는 써주는 것이 좋음(에러처리도 항상 염두해두자)
+  // fetch('/todos') 
+  //   // fetch 사용시에 아래 줄을 꼭 넣어줘야함!
+  //   .then(res => res.json()) // json 형식의 문자열을 객체로 만들고 promise에 담아서 리턴
+  //   // .then(_todos => console.log(_todos)); // 앞에 놈이 return한 것이 인수로 넘어옴, promise면 promise의 결과값(result)
   //   .then(setTodos)
-  //   .catch(console.error);
-  
-  axios.get('/todos')
-    .then(response => response.data)
-    .then(setTodos) // 선택적으로 호출(fulfilled 상태일 때)
-    .catch(console.error); // 선택적으로 호출됨(상태가 rejected로 바뀐다면)
+  //   .catch(console.error); 
+  // console.log(fetch('/todos'));
+
+  const res =  await fetch('/todos'); 
+  const _todos = await res.json();
+  setTodos(_todos);
+
 };
 
 const generateId = () => (todos.length ? Math.max(...todos.map(todo => todo.id)) + 1 : 1);
 
-const addTodo = content => {
+const addTodo = async content => {
   // todos = [{ id: generateId(), content, completed: false }, ...todos];
   // console.log('[addTodo]', todos);
 
@@ -81,13 +69,29 @@ const addTodo = content => {
   //   .then(setTodos)
   //   .catch(console.error);
 
-  axios.post('/todos', { id: generateId(), content, completed: false })
-    .then(response => response.data)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.post('/todos', { id: generateId(), content, completed: false })
+  //   .then(response => response.data)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  // fetch('/todos', {
+  //   method: 'POST',
+  //   headers: {'content-type': 'application/json'}, // mime 타입.. 규약임.. 왜냐고 묻지마
+  //   body: JSON.stringify({ id: generateId(), content, completed: false })
+  // }).then(res => res.json())
+  // .then(setTodos)
+  // .catch(console.error);
+
+  const res = await fetch('/todos', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'}, // mime 타입.. 규약임.. 왜냐고 묻지마
+    body: JSON.stringify({ id: generateId(), content, completed: false })
+  });
+  const _todos = await res.json();
+  setTodos(_todos);
 };
 
-const toggleTodo = id => {
+const toggleTodo = async id => {
   // todos = todos.map(todo => (todo.id === +id ? { ...todo, completed: !todo.completed } : todo));
   // console.log('[toggleTodo]', todos);
 
@@ -99,15 +103,32 @@ const toggleTodo = id => {
   //   .then(setTodos)
   //   .catch(console.error);
   
-  axios.patch(`/todos/${id}`, { completed })
-    // .then(console.log)
-    .then(response => response.data)
-    // .then(console.log)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.patch(`/todos/${id}`, { completed })
+  //   // .then(console.log)
+  //   .then(response => response.data)
+  //   // .then(console.log)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  // fetch(`/todos/${id}`, {
+  //   method: 'PATCH',
+  //   headers: {'content-type': 'application/json'},
+  //   body: JSON.stringify({ completed })
+  // }).then(res => res.json())
+  // .then(setTodos)
+  // .catch(console.error);
+
+  const res = await fetch(`/todos/${id}`, {
+    method: 'PATCH',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({ completed })
+  });
+
+  const _todos = await res.json();
+  setTodos(_todos); 
 };
 
-const removeTodo = id => {
+const removeTodo = async id => {
   // todos = todos.filter(todo => todo.id !== +id);
   // console.log('[removeTodo]', todos);
 
@@ -119,13 +140,26 @@ const removeTodo = id => {
   //   .then(setTodos)
   //   .catch(console.error);
 
-  axios.delete(`/todos/${id}`)
-    .then(response => response.data)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.delete(`/todos/${id}`)
+  //   .then(response => response.data)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  // fetch(`/todos/${id}`, {
+  //   method: 'DELETE'
+  // }).then(res => res.json())
+  // .then(setTodos)
+  // .catch(console.error);
+
+  const res = await fetch(`/todos/${id}`, {
+    method: 'DELETE'
+  });
+
+  const _todos = await res.json();
+  setTodos(_todos);
 };
 
-const toggleCompleteAll = completed => {
+const toggleCompleteAll = async completed => {
   // todos = todos.map(todo => ({ ...todo, completed }));
   // console.log('[toggleCompleteAll]', todos);
 
@@ -137,13 +171,30 @@ const toggleCompleteAll = completed => {
   //   .then(setTodos)
   //   .catch(console.error);
 
-  axios.patch('/todos', { completed })
-    .then(response => response.data)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.patch('/todos', { completed })
+  //   .then(response => response.data)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  // fetch('/todos', {
+  //   method: 'PATCH',
+  //   headers: {'content-type': 'application/json'},
+  //   body: JSON.stringify({ completed })
+  // }).then(res => res.json())
+  // .then(setTodos)
+  // .catch(console.error);
+
+  const res = await fetch('/todos', {
+    method: 'PATCH',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({ completed })
+  });
+
+  const _todos = await res.json();
+  setTodos(_todos);
 };
 
-const removeCompleted = () => {
+const removeCompleted = async () => {
   // todos = todos.filter(todo => !todo.completed);
   // console.log('[removeCompleted]', todos);
 
@@ -153,10 +204,23 @@ const removeCompleted = () => {
   //   .then(setTodos)
   //   .catch(console.error);
   
-  axios.delete('/todos/completed')
-    .then(response => response.data)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.delete('/todos/completed')
+  //   .then(response => response.data)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  // fetch('/todos/completed', {
+  //   method: 'DELETE'
+  // }).then(res => res.json())
+  // .then(setTodos)
+  // .catch(console.error);
+
+  const res = await fetch('/todos/completed', {
+    method: 'DELETE'
+  });
+
+  const _todos = await res.json();
+  setTodos(_todos);
 };
 
 const changeNavState = id => {
@@ -202,6 +266,6 @@ $nav.onclick = ({ target }) => {
   changeNavState(target.id);
 };
 
-axios.get('http://localhost:7000/todos')
-  // .then(console.log)
-  .then(response => console.log(response.data));
+// axios.get('http://localhost:7000/todos')
+//   // .then(console.log)
+//   .then(response => console.log(response.data));

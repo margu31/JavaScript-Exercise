@@ -61,11 +61,19 @@ const getTodos = () => {
   //   .then(setTodos)
   //   .catch(console.error);
   
-  axios.get('/todos')
-    .then(response => response.data)
-    .then(setTodos) // 선택적으로 호출(fulfilled 상태일 때)
-    .catch(console.error); // 선택적으로 호출됨(상태가 rejected로 바뀐다면)
-};
+  // axios.get('/todos')
+  //   .then(response => response.data)
+  //   .then(setTodos) // 선택적으로 호출(fulfilled 상태일 때)
+  //   .catch(console.error); // 선택적으로 호출됨(상태가 rejected로 바뀐다면)
+
+  fetch('/todos') 
+    // fetch 사용시에 아래 줄을 꼭 넣어줘야함!
+    .then(res => res.json()) // json 형식의 문자열을 객체로 만들고 promise에 담아서 리턴
+    // .then(_todos => console.log(_todos)); // 앞에 놈이 return한 것이 인수로 넘어옴, promise면 promise의 결과값(result)
+    .then(setTodos)
+    .catch(console.error); 
+  // console.log(fetch('/todos'));
+ };
 
 const generateId = () => (todos.length ? Math.max(...todos.map(todo => todo.id)) + 1 : 1);
 
@@ -81,10 +89,18 @@ const addTodo = content => {
   //   .then(setTodos)
   //   .catch(console.error);
 
-  axios.post('/todos', { id: generateId(), content, completed: false })
-    .then(response => response.data)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.post('/todos', { id: generateId(), content, completed: false })
+  //   .then(response => response.data)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  fetch('/todos', {
+    method: 'POST',
+    headers: {'content-type': 'application/json'}, // mime 타입.. 규약임.. 왜냐고 묻지마
+    body: JSON.stringify({ id: generateId(), content, completed: false })
+  }).then(res => res.json())
+  .then(setTodos)
+  .catch(console.error);
 };
 
 const toggleTodo = id => {
@@ -99,12 +115,20 @@ const toggleTodo = id => {
   //   .then(setTodos)
   //   .catch(console.error);
   
-  axios.patch(`/todos/${id}`, { completed })
-    // .then(console.log)
-    .then(response => response.data)
-    // .then(console.log)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.patch(`/todos/${id}`, { completed })
+  //   // .then(console.log)
+  //   .then(response => response.data)
+  //   // .then(console.log)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  fetch(`/todos/${id}`, {
+    method: 'PATCH',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({ completed })
+  }).then(res => res.json())
+  .then(setTodos)
+  .catch(console.error);
 };
 
 const removeTodo = id => {
@@ -119,10 +143,16 @@ const removeTodo = id => {
   //   .then(setTodos)
   //   .catch(console.error);
 
-  axios.delete(`/todos/${id}`)
-    .then(response => response.data)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.delete(`/todos/${id}`)
+  //   .then(response => response.data)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  fetch(`/todos/${id}`, {
+    method: 'DELETE'
+  }).then(res => res.json())
+  .then(setTodos)
+  .catch(console.error);
 };
 
 const toggleCompleteAll = completed => {
@@ -137,10 +167,19 @@ const toggleCompleteAll = completed => {
   //   .then(setTodos)
   //   .catch(console.error);
 
-  axios.patch('/todos', { completed })
-    .then(response => response.data)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.patch('/todos', { completed })
+  //   .then(response => response.data)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  fetch('/todos', {
+    method: 'PATCH',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({ completed })
+  }).then(res => res.json())
+  .then(setTodos)
+  .catch(console.error);
+
 };
 
 const removeCompleted = () => {
@@ -153,10 +192,16 @@ const removeCompleted = () => {
   //   .then(setTodos)
   //   .catch(console.error);
   
-  axios.delete('/todos/completed')
-    .then(response => response.data)
-    .then(setTodos)
-    .catch(console.error);
+  // axios.delete('/todos/completed')
+  //   .then(response => response.data)
+  //   .then(setTodos)
+  //   .catch(console.error);
+
+  fetch('/todos/completed', {
+    method: 'DELETE'
+  }).then(res => res.json())
+  .then(setTodos)
+  .catch(console.error);
 };
 
 const changeNavState = id => {
@@ -202,6 +247,6 @@ $nav.onclick = ({ target }) => {
   changeNavState(target.id);
 };
 
-axios.get('http://localhost:7000/todos')
-  // .then(console.log)
-  .then(response => console.log(response.data));
+// axios.get('http://localhost:7000/todos')
+//   // .then(console.log)
+//   .then(response => console.log(response.data));
