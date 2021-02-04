@@ -8,11 +8,18 @@
     "cors": "^2.8.5",
     "express": "^4.17.1"
   },
-  "devDependencies": {},
-  "scripts": {
-    "start": "nodemon server"
+  "devDependencies": {
+    "@babel/cli": "^7.12.13",
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.20.1",
+    "webpack-cli": "^4.5.0"
   },
-  "type": "module",
+  "scripts": {
+    "start": "nodemon server",
+    "build": "webpack -w"
+  },
   "author": "",
   "license": "ISC"
 }
