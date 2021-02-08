@@ -1,13 +1,16 @@
-// const express = require('express');
-// const cors = require('cors');
-import express from 'express'; 
+const express = require('express');
+const cors = require('cors');
+// import express from 'express'; 
 // npm으로 설치한 것은 모두 node_modules에 들어가있으므로 패키지 이름만 써주면 됨
 // 직접 만든 모듈은 경로를 적어줘야함
 // import moduleName from 'cors';
-import cors from 'cors';
+// import cors from 'cors';
 
-import isEmptyObject from './utils/isEmptyObject.js';
-import isDuplicatedId from './utils/isDuplicatedId.js';
+const isEmptyObject = require('./utils/isEmptyObject.js');
+const isDuplicatedId = require('./utils/isDuplicatedId.js');
+
+// import isEmptyObject from './utils/isEmptyObject.js';
+// import isDuplicatedId from './utils/isDuplicatedId.js';
 
 // import todos from './data/todos.js';
 // import 하면 let으로 선언한 변수도 const가 되어버림 따라서 readonly일 경우에만 쪼개라(상수로 관리하겠다면)

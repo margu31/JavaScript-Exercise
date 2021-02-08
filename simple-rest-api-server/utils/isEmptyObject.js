@@ -3,4 +3,5 @@ const isEmpty = o => !Object.keys(o).length;
 
 const isEmptyObject = o => isPlainObject(o) && isEmpty(o);
 
-export default isEmptyObject;
+// export default isEmptyObject;
+module.exports = isEmptyObject;
