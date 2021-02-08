@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Light / Dark Mode - Toggle button</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet" />
+    <style>
+      *,
+      *::after,
+      *::before {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Open Sans';
+        font-weight: 300;
+      }
+      .title {
+        color: #db5b33;
+        font-weight: 300;
+        text-align: center;
+      }
+      .toggle-button {
+        position: relative;
+        width: 100px;
+        height: 50px;
+        margin: 0 auto;
+        cursor: pointer;
+      }
+      /* 토글 버튼 내부의 원 */
+      .toggle-button > .toggle-button-switch {
+        position: absolute;
+        top: 2px;
+        left: 2px; /* toggle => left: 52px */
+        width: 46px;
+        height: 46px;
+        background-color: #fff;
+        border-radius: 100%;
+        transition: left 0.3s;
+      }
+      /* 토글 버튼의 바탕 */
+      .toggle-button > .toggle-button-text {
+        display: flex;
+        background-color: #3dbf87;
+        border-radius: 25px;
+        box-shadow: 2px 2px 5px 0 rgba(50, 50, 50, 0.75);
+        transition: background-color 0.3s;
+      }
+      /* 토글 버튼의 텍스트 */
+      .toggle-button > .toggle-button-text > .toggle-button-text-on,
+      .toggle-button > .toggle-button-text > .toggle-button-text-off {
+        width: 50%;
+        line-height: 50px;
+        text-align: center;
+        color: #fff;
+      }
+      article {
+        width: 960px;
+        margin: 50px auto 0;
+        font-size: 1.5em;
+      }
+
+      /* Dark Theme */
+      body.dark {
+        background-color: #232323;
+      }
+      body.dark .toggle-button > .toggle-button-switch {
+        left: 52px;
+      }
+      body.dark .toggle-button > .toggle-button-text {
+        background-color: #fc3164;
+      }
+      body.dark article {
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">Light / Dark Mode - Toggle Button</h1>
+    <div class="toggle-button">
+      <div class="toggle-button-switch"></div>
+      <div class="toggle-button-text">
+        <div class="toggle-button-text-on"><i class="far fa-sun fa-lg"></i></div>
+        <div class="toggle-button-text-off"><i class="far fa-moon fa-lg"></i></div>
+      </div>
+    </div>
+    <article>
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum optio ab porro magni in sunt ipsam, doloremque minima,
+      itaque sapiente consequatur, repellat velit voluptatum accusantium aperiam. Nostrum sunt reprehenderit nemo!
+    </article>
+  </body>
+  <script>
+    const $toggleButton = document.querySelector('.toggle-button');
+    const getLocalStorageTheme = localStorage.getItem('theme');
+    const darkModeUser = window.matchMedia('(prefers-color-scheme: dark)');
+    // window.matchMedia는 사용자 os테마 감지
+    // console.log(darkModeUser); // MediaQueryList {media: "(prefers-color-scheme: dark)", matches: true, onchange: null}
+    // console.log(localStorage); // Storage {length: 0}
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (getLocalStorageTheme === 'dark') {
+        document.querySelector('body').classList.add('dark');
+      } else if (darkModeUser.matches) {
+        document.querySelector('body').classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else localStorage.setItem('theme', 'light');
+    });
+
+    $toggleButton.onclick = () => {
+      document.querySelector('body').classList.toggle('dark');
+
+      if (document.querySelector('body').classList.contains('dark')) {
+        localStorage.setItem('theme', 'dark');
+      } else localStorage.setItem('theme', 'light');
+
+      // console.log(getLocalStorageTheme);
+      // console.log(darkModeUser);
+      // console.log(localStorage);
+    };
+    // getLocalStorageTheme 이건 계속 dark로 나오는게 맞는건가.. 클릭했을때 storage는 light로 바뀌는디
+  </script>
+</html>
