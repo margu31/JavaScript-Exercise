@@ -75,5 +75,51 @@
     $decrease.addEventListener('click', () => {
       $counter.textContent = counter.decrease();
     })
+
+    // 강사님 코드
+    // const $counter = document.querySelector('.container > .counter');
+
+    // let num = 0;
+
+    // const render = () => {
+    //   $counter.textContent = num;
+    // };
+
+    // document.querySelector('.container > button.increase').onclick = () => {
+    //   // num++ 또는 ++num 은 실수하기 좋음, 웬만하면 안쓰는게 좋음
+    //   num += 1;
+    //   render();
+    // }
+
+    // document.querySelector('.container > button.decrease').onclick = () => {
+    //   if (num > 0) num -= 1;
+    //   render();
+    // }
+    
+    const counter = (() => {
+      let num = 0;
+
+     const $counter = document.querySelector('.container > .counter');
+
+      const render = () => {
+        $counter.textContent = num;
+      };
+
+      return {
+        increase() {
+          num += 1;
+          render();
+        },
+
+        decrease() {
+          if (num > 0) num -= 1;
+          render();
+        }
+      };
+    })();
+
+    document.querySelector('.container > button.increase').onclick = counter.increase;
+    document.querySelector('.container > button.decrease').onclick = counter.decrease;
+
   </script>
 </html>
