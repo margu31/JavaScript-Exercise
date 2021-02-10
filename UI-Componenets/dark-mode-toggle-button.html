@@ -16,6 +16,7 @@
       body {
         font-family: 'Open Sans';
         font-weight: 300;
+        opacity: 0;
       }
       .title {
         color: #db5b33;
@@ -121,4 +122,35 @@
     };
     // getLocalStorageTheme 이건 계속 dark로 나오는게 맞는건가.. 클릭했을때 storage는 light로 바뀌는디
   </script>
+  <!-- <script>
+    // 강사님 코드.. 전부 다 따라치지는 못함
+    const init = () => {
+      let theme = localStorage.getItem('theme');
+  
+      // if (!theme) localStorage.setItem('theme', 'light');
+      if (!theme) {
+        const { matches } = window.matchMedia('(prefers-color-scheme: dark)');
+        theme = matches ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+      }
+  
+      document.body.classList.toggle('dark', theme === 'dark');
+      // if (theme === 'dark') document.body.classList.add('dark');
+      // else document.body.classList.remove('dark');
+  
+      // 깜박거리는 현상을 그냥 넘어가는 프론트엔드 개발자는...아니되지요..
+      setTimeout(() => {
+        document.body.style.opacity = 1;
+      }, 300);
+    };
+
+    document.addEventListener('DOMConteneLoaded', init);
+
+    document.querySelector('.toggle-button').onclick = () => {
+      localStorage.setItem('theme', localStorage.getItem('theme') === 'dark' ? 'light' : 'dark');
+
+      document.body.classList.toggle('dark');
+    };
+
+  </script> -->
 </html>
