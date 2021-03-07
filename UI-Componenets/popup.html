@@ -81,7 +81,7 @@
     <div class="overlay"></div>
     <p class="popup-message"></p>
   </body>
-  <script>
+  <!-- <script>
     const $toggleButton = document.querySelector('.toggle-button');
     const $popup = document.querySelector('.popup');
     const $overlay = document.querySelector('.overlay');
@@ -115,8 +115,8 @@
     //   renderMsg();
     // };
 
-    // document.querySelector('.btnCancel').onclick = close;
-    // document.querySelector('.btnClose').onclick = close;
+    document.querySelector('.btnCancel').onclick = close;
+    document.querySelector('.btnClose').onclick = close;
 
     $popup.onsubmit = e => {
       e.preventDefault();
@@ -127,6 +127,7 @@
     }; // cancel, close 버튼까지 msg 작성해줌..
 
     // $popup.addEventListener('click', e => {
+        //  e.preventDefault();
     //   if (e.target === document.querySelector('.btnOk')) {
     //     const $popupInput = document.querySelector('.popup-input');
     //     document.querySelector('.popup-message').textContent = `from popup: ${$popupInput.value}`;
@@ -134,6 +135,50 @@
     //     $popupInput.value = '';
     //   }
     // }) // ok버튼 눌렀을 때만 msg가 작성되기는 하는데.. 생기자마자 바로 사라져버림
+    // form 태그는 click 이벤트가 아닌 submit 이벤트 잡아야함
+    // 아........ e.target은 form요소.. submit 이벤트 발생 시키는 것은 form요소다 버튼이 아냐
+  
+  </script> -->
+
+  <script>
+    const $popup = document.querySelector('.popup');
+    const $popupInput = document.querySelector('.popup > input');
+    const $popupMessage = document.querySelector('.popup-message');
+    const $overlay = document.querySelector('.overlay');
+
+    const popup = (() => {
+      let isActive = false;
+
+      return {
+        toggle() {
+        isActive = !isActive;
+
+        $popup.style.display = isActive ? 'block' : 'none';
+        $overlay.style.display = isActive ? 'block' : 'none';
+        },
+
+        close() {
+          $popup.style.display = 'none';
+          $overlay.style.display = 'none';
+          isActive = false;
+        }
+      };
+    })();
+    
+    document.querySelector('.toggle-button').onclick = popup.toggle;
+    document.querySelector('.btnClose').onclick = popup.toggle;
+    document.querySelector('.btnCancel').onclick = popup.toggle;
+
+    $overlay.onclick = popup.close;
+
+    $popup.onsubmit = e => {
+      e.preventDefault();
+      $popupMessage.textContent = `from popup: ${$popupInput.value}`;
+      $popupInput.value = '';
+      popup.close();
+    };
+
+
   </script>
 </html>
 

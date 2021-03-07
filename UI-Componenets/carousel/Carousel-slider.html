@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet" />
+    <title>Carousel Slider</title>
+    <style>
+      *,
+      *::after,
+      *::before {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Open Sans';
+        font-weight: 300;
+        color: #58666e;
+        background-color: #f0f3f4;
+      }
+      .title {
+        color: #db5b33;
+        font-weight: 300;
+        text-align: center;
+      }
+      /* 캐러셀의 window 역할을 한다. */
+      .carousel {
+        position: relative;
+        margin: 0 auto;
+        overflow: hidden;
+        /* carousel 요소의 width 셋팅이 완료될 때까지 감춘다. */
+        opacity: 0;
+      }
+      .carousel-slides {
+        --currentSlide: 0;
+        --duration: 0;
+        /* 수평 정렬 */
+        display: flex;
+        transition: transform calc(var(--duration) * 1ms) ease-out;
+        transform: translate3D(calc(var(--currentSlide) * -100%), 0, 0);
+      }
+      .carousel-slides img {
+        padding: 5px;
+      }
+      /* carousel의 prev, next 버튼 */
+      .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2em;
+        color: #fff;
+        background-color: transparent;
+        border-color: transparent;
+        cursor: pointer;
+        z-index: 99;
+      }
+      .carousel-control:focus {
+        outline: none;
+      }
+      /* carousel의 prev 버튼 */
+      .carousel-control.prev {
+        left: 0;
+      }
+      /* carousel의 next 버튼 */
+      .carousel-control.next {
+        right: 0;
+      }
+
+      .page-container {
+       display: flex;
+       justify-content: center;
+      }
+
+      .page-container button {
+        padding: 0;
+        border: none;
+        background: #aaa;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+        margin-top: 10px;
+        outline: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">Carousel Slider</h1>
+    <div class="carousel">
+      <!-- <div class="carousel-slides">
+        <img src="./image/movie-1.jpg">
+        <img src="./image/movie-2.jpg">
+        <img src="./image/movie-3.jpg">
+        <img src="./image/movie-4.jpg">
+      </div>
+      <button class="carousel-control prev">&laquo;</button>
+      <button class="carousel-control next">&raquo;</button> -->
+    </div>
+    <script defer src="carousel-re.js">
+      // const carousel = ($container, images) => {
+      //   let currentSlideIndex = 1;
+      //   let delay = 200;
+      //   let timerId;
+      //   let setTimerId;
+
+      //   $container.innerHTML = `<div class="carousel-slides"> ${images.map((image, i) => 
+      //     `<img id="${i + 1}" src="${image}">`
+      //   ).join('')}</div>
+      //   <button class="carousel-control prev">&laquo;</button>
+      //   <button class="carousel-control next">&raquo;</button>
+      //   <div class="page-container">
+      //   ${images.map((_, i) => `<button id="${i + 1}" class="pagination">o</button>`).join('')}
+      //   </div>
+      //   </div>`;
+
+      //   const $carouselSlides = document.querySelector('.carousel-slides');
+      //   const $prevBtn = document.querySelector('.prev');
+      //   const $nextBtn = document.querySelector('.next');
+      //   const $pageContainer = document.querySelector('.page-container');
+
+      //   const $firstChild = $carouselSlides.firstElementChild;
+      //   const $lastChild = $carouselSlides.lastElementChild;
+      //   const $clonedFirst = $firstChild.cloneNode(true);
+      //   const $clonedLast = $lastChild.cloneNode(true);
+
+      //   $carouselSlides.appendChild($clonedFirst);
+      //   $carouselSlides.prepend($clonedLast);
+
+      //   const activeSlide = () => {
+      //     const $pagination = document.querySelectorAll('.pagination');
+      //     if(currentSlideIndex === 5) {
+      //       $pageContainer.firstElementChild.style.background = 'yellow';
+      //       $pageContainer.lastElementChild.style.background = '#fff';
+      //     } else if (currentSlideIndex === 0) {
+      //       $pageContainer.firstElementChild.style.background = '#fff';
+      //       $pageContainer.lastElementChild.style.background = 'yellow'
+      //     }else {
+
+      //       [...$pagination].forEach($el => {
+      //       $el.style.background = `${+$el.id === currentSlideIndex? 'yellow' : '#fff'}`;
+      //     });
+      //   }
+      //   };
+
+      //   const setSlides = () => {
+      //     $carouselSlides.style.setProperty('--currentSlide', currentSlideIndex);
+      //     $carouselSlides.style.setProperty('--duration', delay);
+      //   };
+
+
+      //   const goBackSlides = (currentSlide, duration) => {
+      //     currentSlideIndex = currentSlide;
+      //     delay = duration;
+      //     setSlides();
+      //     activeSlide();
+      //   };
+      //   const slideShow = () => {
+      //     if (currentSlideIndex < images.length + 1) {
+      //       currentSlideIndex += 1;
+      //       delay = 200;
+      //       setSlides();
+      //       activeSlide();
+      //     }
+      //     if (currentSlideIndex === images.length + 1) {
+      //       activeSlide()
+      //       setTimeout(goBackSlides, delay, 1, 0);
+      //     }
+      //   };
+
+      //   $nextBtn.onclick = () => {
+      //     clearInterval(timerId);
+      //     clearTimeout(setTimerId);
+      //     slideShow();
+      //     activeSlide();
+      //     setTimerId = setTimeout(() => {
+      //       timerId = setInterval(slideShow, 1000);
+      //     }, 1000);
+      //   };
+
+      //   $prevBtn.onclick = () => {
+      //     clearInterval(timerId);
+      //     clearTimeout(setTimerId);
+
+      //     if (currentSlideIndex > 0) {
+      //       currentSlideIndex -= 1;
+      //       delay = 200;
+      //       activeSlide()
+      //       setSlides();
+      //     }
+      //     if (currentSlideIndex === 0) {
+      //       activeSlide()
+      //       setTimeout(goBackSlides, delay, 4, 0);
+      //     }
+      //     setTimerId = setTimeout(() => {
+      //       timerId = setInterval(slideShow, 1000);
+      //     }, 1000);
+      //   };
+
+      //   $pageContainer.onclick = e => {
+      //     clearInterval(timerId);
+      //     clearTimeout(setTimerId);
+      //     currentSlideIndex = +e.target.id;
+      //     setSlides();
+      //     activeSlide();
+      //     setTimerId = setTimeout(() => {
+      //       timerId = setInterval(slideShow, 1000);
+      //     }, 1000);
+      //   };
+      
+      //   // $carouselSlides.lastElementChild.ontransitionend = () => {
+      //   //   $carouselSlides.lastElementChild.style.setProperty('--duration', 0);
+      //   // };
+
+      //   window.onload = () => {
+      //     $container.style.opacity = '1';
+      //     // console.log($container.scrollWidth);
+      //     $container.style.width = `${$container.scrollWidth / (images.length + 2)}px`;
+      //     $carouselSlides.style.setProperty('--currentSlide', currentSlideIndex);
+      //     timerId = setInterval(slideShow, 1000);
+      //     activeSlide();
+      //   };
+      // };
+
+      // carousel(document.querySelector('.carousel'), [
+      //   './image/movie-1.jpg',
+      //   './image/movie-2.jpg',
+      //   './image/movie-3.jpg',
+      //   './image/movie-4.jpg'
+      // ]);
+    </script>
+  </body>
+</html>
